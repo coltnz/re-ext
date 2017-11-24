@@ -4,22 +4,26 @@ A Clojure library to provide regular expression utilities in particular designed
 
 ## Usage
 ```clojure
-(re/and #"a" #"b") ;compiled at macro time 
+;compiled at macro time
+(re/and #"a" #"b")  
 => #"(ab)"
 ```
 
 ```clojure
-(re/or #"a" (re-pattern "b"))  ;compiled at run time
+;compiled at run time
+(re/or #"a" (re-pattern "b"))  
 => #"(a|b)a"
 ```
 
 ```clojure
-(re/or #"a" (re/and #"b")) ;compiled at macro time
+;compiled at macro time
+(re/or #"a" (re/and #"b")) 
  => #"(a|(b))"
 ```
 
 ```clojure
-(def def-re #"bc") ;compiled at run time
+;compiled at run time
+(def def-re #"bc") 
 (let [local-re #"ef"]
   (re/or def-re local-re))
 => #"(bcd|bcd)"
