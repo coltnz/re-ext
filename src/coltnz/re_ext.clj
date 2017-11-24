@@ -21,11 +21,16 @@
             (let [[h & t] re-form
                   resolved-fn (resolve h)]
               (cond
-                (clojure.core/= resolved-fn #'coltnz.re-ext/and) (conj re-s (apply compose* "" t))
-                (clojure.core/= resolved-fn #'coltnz.re-ext/or) (conj re-s (apply compose* "|" t))
-                (clojure.core/= resolved-fn #'clojure.core/re-pattern) (if (not (second t))
-                                                                         (conj re-s (first t))
-                                                                         (throw (Exception. (str "Unknown regex fn " re-form))))))
+                (clojure.core/= resolved-fn #'coltnz.re-ext/and)
+                (conj re-s (apply compose* "" t))
+
+                (clojure.core/= resolved-fn #'coltnz.re-ext/or)
+                (conj re-s (apply compose* "|" t))
+
+                (clojure.core/= resolved-fn #'clojure.core/re-pattern)
+                (if (not (second t))
+                  (conj re-s (first t))
+                  (throw (Exception. (str "Unknown regex fn " re-form))))))
             Pattern
             (conj re-s (.pattern ^Pattern re-form))
             (throw (Exception. (str re-form " is not a regex form")))))
@@ -50,8 +55,9 @@
         (if fs (recur fs) true)))))
 
 (defmacro and
-  "Joins `re-forms` as a new grouped combined pattern where re-forms are anything that evaluates to java.util.regex.Pattern.
-  If all forms are considered evaluateable at macro time then the grouped pattern will be compiled at that time.\"
+  "Joins `re-forms` as a new grouped combined pattern where re-forms are anything that
+   evaluates to java.util.regex.Pattern. If all forms can be evaluated at macro time
+   then the grouped pattern will be compiled at that time.
   e.g.
    (re-and #\"a\" #\"b\") => (ab)"
   [& re-forms]
@@ -60,8 +66,9 @@
     `(Pattern/compile (compose* "" ~@re-forms))))
 
 (defmacro or
-  "Joins `re-forms` as a new grouped explicit or pattern   where re-forms are anything that evaluates to java.util.regex.Pattern.
-  If all forms are considered evaluatable at macro time then the grouped pattern will be compiled at that time.\"
+  "Joins `re-forms` as a new grouped explicit or pattern where re-forms are anything that
+  evaluates to java.util.regex.Pattern.If all forms can be evaluated at macro time
+  then the grouped pattern will be compiled at that time.
   e.g.
    (re-and #\"a\" #\"b\") => (a|b)"
   [& re-forms]
@@ -75,7 +82,7 @@
   (instance? Pattern x))
 
 (defn =
-  "Returns true if (str re1) equals (str re2), false if not. "
+  "Returns true if (str re1) equals (str re2), false if not."
   ([re1] true)
   ([re1 re2]
    (clojure.core/and

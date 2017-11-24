@@ -1,4 +1,4 @@
-(defproject re-pose "0.1.0-SNAPSHOT"
+(defproject re-ext "0.1.0-SNAPSHOT"
   :description "Clojure regular expression util library"
   :url "https://github.com/coltnz/re-ext"
   :license {:name "Eclipse Public License"
